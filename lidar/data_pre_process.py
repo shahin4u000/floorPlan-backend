@@ -591,15 +591,15 @@ class LidarData():
 
 
 
-def main (data):
+def parseData (data):
     ld = LidarData(data)
     ld.apply_all_cleaning(verbose=False)
     angs,ss = compute_ransac_angles(ld.x, ld.y, n_win=80
-                                , n_trials=100, verbose= True)
+                                , n_trials=100, verbose= False)
 
     trans_slide = search_transition_regions(
-        angs, verbose=True)
-    wall_lines = compile_walls(trans_slide, ld.x, ld.y, verbose=True)
+        angs, verbose=False)
+    wall_lines = compile_walls(trans_slide, ld.x, ld.y, verbose=False)
     sects = get_wall_corners(wall_lines)
     
     return ld

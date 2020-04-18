@@ -14,9 +14,10 @@ from lidar.data_pre_process import *
 
 
 class lidarApi(APIView):
-    def post(self, request): 
+    def post(self, request):
+        print(request) 
         lidarData= request.data["data"]   
-        result = main(lidarData)    
+        result = parseData(lidarData)    
         plot = floorPlanPlotting(result)
         #check_request = request.data
         #plot = plotting(check_request)
