@@ -45,7 +45,7 @@ def compute_ransac_angles(x_data, y_data, n_win=10, n_trials=100, verbose=False)
         slope = (y_range_RANSAC[1] - y_range_RANSAC[0]) / \
             (x_range[1] - x_range[0])
             
-        #print("y_range_RANSAC:", y_range_RANSAC)
+        ##print("y_range_RANSAC:", y_range_RANSAC)
 
         # store angle
         
@@ -53,12 +53,12 @@ def compute_ransac_angles(x_data, y_data, n_win=10, n_trials=100, verbose=False)
         ss.append(slope)
 
     angs = np.array(angs)
-    #print("before angs:",angs)
+    ##print("before angs:",angs)
     ss = np.array(ss)
     angs[angs > 1.5] = angs[angs > 1.5]-np.pi    #??
-    #print(" angs:",angs)
-    print('Total time: %fs' % (time()-startTime))
-    #print("angs: ",ss)
+    ##print(" angs:",angs)
+    #print('Total time: %fs' % (time()-startTime))
+    ##print("angs: ",ss)
     return angs,ss
 
 #%%
@@ -151,7 +151,7 @@ def compile_walls(trans_slide, x_data, y_data, n_trials=100, verbose=False):
 
     # pad array to full data length
     trans_fill = fill_arr(trans_slide, False, len(x_data), offset=offset)
-    print("trans_fill: ",trans_fill)
+    #print("trans_fill: ",trans_fill)
     # pairwise XOR (exclusive or), looking for changes in transition regions
     t_idx = [trans_fill[i] != trans_fill[i+1]
              for i in range(len(trans_fill)-1)]
@@ -221,7 +221,7 @@ def compile_walls(trans_slide, x_data, y_data, n_trials=100, verbose=False):
             plt.plot(x_range_r, y_range_r, '-r', label='Robust line model')
             plt.axis('equal')
             plt.show()
-            print('x_span: %f, y_span: %f' % (x_span, y_span))
+            #print('x_span: %f, y_span: %f' % (x_span, y_span))
 
         # do not record if span is too small (tiny walls can be unstable)
         if x_span < 200 and y_span < 200:
@@ -399,7 +399,7 @@ def detect_pillar(x, y, verbose=False):
     heu = np.mean((distances-radius)**2)
 
     if verbose:
-        print('Mid: (%f, %f), Radius: %f, Heu: %f' % (p[0], p[1], radius, heu))
+        #print('Mid: (%f, %f), Radius: %f, Heu: %f' % (p[0], p[1], radius, heu))
         plt.plot(x_ma, y_ma, '.')
         plt.plot(p[0], p[1], 'o')
         cc = plt.Circle(p, radius, color='g', fill=False)
@@ -452,7 +452,7 @@ class LidarData():
         self.distance = df.values[:, 1]
         self.reset_xy()
         self.pillars = []
-        print('Read %d points from %s' % (len(self.angle), file_path))
+        #print('Read %d points from %s' % (len(self.angle), file_path))
 
     # recompute cartesian
     
@@ -466,7 +466,7 @@ class LidarData():
         ax = plt.gca()
         if show_pillars:
             for pp in self.pillars:
-                print(pp)
+                #print(pp)
                 cc = plt.Circle(pp[0], pp[1], color='g', fill=False)
                 ax.add_artist(cc)
 
@@ -478,8 +478,7 @@ class LidarData():
     def apply_max_range(self, max_range=10000):
         # cull all values greater than a certain range
         in_idx = self.distance < max_range
-        print('apply_max_range: %d points to %d' %
-              (len(self.angle), sum(in_idx)))
+        #print('apply_max_range: %d points to %d' % (len(self.angle), sum(in_idx)))
         self.angle = self.angle[in_idx]
         self.distance = self.distance[in_idx]
         self.reset_xy()
@@ -498,8 +497,7 @@ class LidarData():
             avgs[idx] = np.mean(cur_dis)
             stds[idx] = np.std(cur_dis)
         valid_idx = stds < std_thresh
-        print('mean_and_filter_angles: %d points to %d' %
-              (len(self.angle), sum(valid_idx)))
+        #print('mean_and_filter_angles: %d points to %d' % (len(self.angle), sum(valid_idx)))
         self.angle = unique_angles[valid_idx]
         self.distance = avgs[valid_idx]
         self.reset_xy()
@@ -512,8 +510,7 @@ class LidarData():
         lone_idx = [high_idx[i] and high_idx[i+1]
                     for i in range(len(range_diff)-1)]
         lone_idx = np.concatenate(([False], lone_idx, [False]))
-        print('remove_lone_points: %d points to %d' %
-              (len(self.angle), sum(~lone_idx)))
+        #print('remove_lone_points: %d points to %d' %  (len(self.angle), sum(~lone_idx)))
         self.angle = self.angle[~lone_idx]
         self.distance = self.distance[~lone_idx]
         self.reset_xy()
@@ -533,8 +530,7 @@ class LidarData():
             plt.show()
 
         valid_idx = clusters > -1
-        print('remove_small_clusters: %d points to %d' %
-              (len(self.angle), sum(valid_idx)))
+        #print('remove_small_clusters: %d points to %d' % (len(self.angle), sum(valid_idx)))
         self.angle = self.angle[valid_idx]
         self.distance = self.distance[valid_idx]
         self.reset_xy()
@@ -575,8 +571,7 @@ class LidarData():
         for cc in invalid:
             valid_idx[cc == clusters] = False
 
-        print('remove_pillars: %d points to %d' %
-              (len(self.angle), sum(valid_idx)))
+        #print('remove_pillars: %d points to %d' % (len(self.angle), sum(valid_idx)))
         self.angle = self.angle[valid_idx]
         self.distance = self.distance[valid_idx]
         self.reset_xy()
@@ -602,7 +597,7 @@ def parseData (data):
     wall_lines = compile_walls(trans_slide, ld.x, ld.y, verbose=False)
     sects = get_wall_corners(wall_lines)
     
-    return ld
+    return ld, sects
 
 
 
