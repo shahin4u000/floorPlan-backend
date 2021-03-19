@@ -10,7 +10,7 @@ decorator==4.4.2
 Django==3.0.3
 django-cors-headers==3.2.1
 django-filter==2.2.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 Flask==1.1.1
 imageio==2.8.0
 itsdangerous==1.1.0
