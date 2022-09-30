@@ -15,7 +15,7 @@ Flask==1.1.1
 imageio==2.8.0
 itsdangerous==1.1.0
 Jinja2==2.11.1
-joblib==0.14.1
+joblib==1.2.0
 kiwisolver==1.2.0
 Markdown==3.2.1
 MarkupSafe==1.1.1
